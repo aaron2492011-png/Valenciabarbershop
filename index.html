@@ -550,6 +550,7 @@ async function reservar(){
       if(resultado&&resultado.error==='ocupada')throw {code:'ocupada'};
       throw new Error((resultado&&(resultado.message||resultado.error))||'El servidor no pudo confirmar la cita.');
     }
+    S.calendarioCargado.delete(date);S.calendarioOcupados.delete(date);
     const entrada={nombre:sv.n,precio:sv.p,dur:sv.dur,estado:'confirmada',creada:Date.now()};
     const citas=Object.assign({},S.citas);citas[k]=entrada;S.citas=citas;guardarLocal();
     if(S.db&&S.uid){
