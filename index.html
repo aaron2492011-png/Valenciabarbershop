@@ -512,7 +512,7 @@ async function reservar(){
   const date=ui.sel.date,min=ui.sel.min,k=keyOf(date,min),sv=svcById(ui.sel.svc);
   if(!libre(date,min,sv.dur)){toast('Esa hora ya no está libre. Elige otra.');ui.sel.min=null;return render()}
   ui.busy=true;render();
-  const hora=p2(Math.floor(min/60))+':'+p2(min%60);
+  const hora=pad(Math.floor(min/60))+':'+pad(min%60);
   const payload={nombre:S.name,telefono:S.tel,servicio:sv.n,fecha:date,hora:hora,duracionMinutos:sv.dur};
   try{
     const respuesta=await fetch(RESERVAS_ENDPOINT,{
