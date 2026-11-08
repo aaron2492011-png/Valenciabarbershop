@@ -524,7 +524,7 @@ async function reservar(){
     const resultado=await respuesta.json();
     if(!resultado||resultado.ok!==true){
       if(resultado&&resultado.error==='ocupada')throw {code:'ocupada'};
-      throw new Error(resultado&&resultado.message||'No se pudo confirmar la cita.');
+      throw new Error((resultado&&(resultado.message||resultado.error))||'El servidor no pudo confirmar la cita.');
     }
     const entrada={nombre:sv.n,precio:sv.p,dur:sv.dur,estado:'confirmada',creada:Date.now()};
     const citas=Object.assign({},S.citas);citas[k]=entrada;S.citas=citas;guardarLocal();
@@ -540,7 +540,7 @@ async function reservar(){
     if(e&&e.code==='ocupada'){
       toast('Esa hora acaba de ocuparse. Elige otra.');ui.sel.min=null;
     }else{
-      toast('No se pudo confirmar la cita. Comprueba la conexión e inténtalo de nuevo.');
+      toast('No se pudo reservar: '+(e&&e.message?e.message:'comprueba la conexión e inténtalo de nuevo.'));
     }
     render();
   }
